@@ -44,3 +44,45 @@ func StaffPost(c *gin.Context) {
 		"data":    staff,
 	})
 }
+
+func StaffLogin(c *gin.Context) {
+	var loginDetails struct {
+		Username string `json:"username"`
+		Password string `json:"password"`
+		// HospitalId int8  `json:"hospital_id"`
+	}
+
+	// Bind the incoming JSON request to the 'loginDetails' struct
+	if err := c.ShouldBindJSON(&loginDetails); err != nil {
+		c.JSON(400, gin.H{
+			"error": "Invalid request body",
+		})
+		return
+	}
+
+	// Retrieve the staff record by username from the database
+	var staff models.Staff
+	result := initializers.DB.Where("username = ?", loginDetails.Username).First(&staff)
+	if result.Error != nil {
+		// Staff not found
+		c.JSON(404, gin.H{
+			"error": "Staff not found",
+		})
+		return
+	}
+	// Compare the provided password with the hashed password stored in the database
+	err := bcrypt.CompareHashAndPassword([]byte(staff.Password), []byte(loginDetails.Password))
+	if err != nil {
+		// Password does not match
+		c.JSON(401, gin.H{
+			"error": "Invalid password",
+		})
+		return
+	}
+
+	// If login is successful, return a success message (or a JWT token if you use one)
+	c.JSON(200, gin.H{
+		"message": "Login successful",
+		"data":    staff, // You can return user data or a token here
+	})
+}

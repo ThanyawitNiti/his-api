@@ -19,6 +19,7 @@ func main() {
 	r := gin.Default()
 
 	r.POST("/staff/create", controllers.StaffPost)
+	r.POST("/staff/login", controllers.StaffLogin)
 	r.GET("/", controllers.PatientGet)
 
 	// run at port 8080
