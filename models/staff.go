@@ -2,7 +2,7 @@ package models
 
 import "time"
 
-type Patinent struct {
+type Staff struct {
 	IsDelete     bool      `json:"is_delete"`
 	IsEdit       bool      `json:"is_edit"`
 	CreatedAt    time.Time `json:"created_at"`
@@ -15,11 +15,10 @@ type Patinent struct {
 	MiddleNameEN string    `json:"middle_name_en"`
 	LastNameEN   string    `json:"last_name_en"`
 	DateOfBirth  string    `json:"date_of_birth"`
-	PatientHN    string    `json:"patient_hn"`
-	NationalID   string    `json:"national_id"`
-	PassportID   string    `json:"passport_id"`
 	PhoneNumber  string    `json:"phone_number"`
 	Email        string    `json:"email"`
 	Gender       string    `json:"gender"`
 	HospitalId   int8      `json:"hospital_id"`
+	Department   string    `json:"department"`
+	Position     string    `json:"position"`
 }

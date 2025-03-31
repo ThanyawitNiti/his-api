@@ -11,6 +11,14 @@ import (
 	"github.com/joho/godotenv"
 )
 
+func init() {
+	err := godotenv.Load()
+
+	if err != nil {
+		log.Fatal("error loading env")
+	}
+}
+
 var (
 	db *gorm.DB
 )
