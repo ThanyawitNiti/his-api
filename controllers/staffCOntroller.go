@@ -105,11 +105,15 @@ func StaffLogin(c *gin.Context) {
 		})
 		return
 	}
+	
 
 	// If login is successful, return a success message (or a JWT token if you use one)
 	c.JSON(200, gin.H{
 		"message": "Login successful",
-		"data":    staff, // You can return user data or a token
+		"data":    {
+			staff.username,
+			staff.hospital_id
+		}, // You can return user data or a token
 		"token":   tk,    // Send JWT token to client
 	})
 }
