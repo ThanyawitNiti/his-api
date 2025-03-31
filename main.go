@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"gin/controllers"
 	"gin/initializers"
 	"log"
 
@@ -17,11 +18,8 @@ func main() {
 	fmt.Println("Start project")
 	r := gin.Default()
 
-	r.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"Message": "pong",
-		})
-	})
+	r.POST("/staff/create", controllers.StaffPost)
+	r.GET("/", controllers.PatientGet)
 
 	// run at port 8080
 	if err := r.Run(":8080"); err != nil {

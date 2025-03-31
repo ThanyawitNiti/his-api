@@ -2,7 +2,7 @@ package models
 
 import "time"
 
-type Patinent struct {
+type Patient struct {
 	IsDelete     bool      `json:"is_delete"`
 	IsEdit       bool      `json:"is_edit"`
 	CreatedAt    time.Time `json:"created_at"`
