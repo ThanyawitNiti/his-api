@@ -8,6 +8,7 @@ type Hospital struct {
 	CreatedAt   time.Time `json:"created_at"`
 	EditAt      time.Time `json:"edit_at"`
 	DeletedAt   time.Time `json:"deleted_at"`
+	ID          uint      `gorm:"primaryKey;autoIncrement" json:"id"`
 	NameTh      string    `json:"name_th"`
 	NameEn      string    `json:"name_en"`
 	Address     string    `json:"address"`

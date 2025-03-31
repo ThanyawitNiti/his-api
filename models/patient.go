@@ -8,6 +8,7 @@ type Patient struct {
 	CreatedAt    time.Time `json:"created_at"`
 	EditAt       time.Time `json:"edit_at"`
 	DeletedAt    time.Time `json:"deleted_at"`
+	ID           uint      `gorm:"primaryKey;autoIncrement" json:"id"`
 	FirstNameTH  string    `json:"first_name_th"`
 	MiddleNameTH string    `json:"middle_name_th"`
 	LastNameTH   string    `json:"last_name_th"`

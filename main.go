@@ -20,7 +20,8 @@ func main() {
 
 	r.POST("/staff/create", controllers.StaffPost)
 	r.POST("/staff/login", controllers.StaffLogin)
-	r.GET("/", controllers.PatientGet)
+	r.GET("/patient/search", controllers.PatientSearch)
+	r.GET("/patient/:id", controllers.PatientGetByid)
 
 	// run at port 8080
 	if err := r.Run(":8080"); err != nil {
