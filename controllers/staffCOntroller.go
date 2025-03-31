@@ -3,11 +3,16 @@ package controllers
 import (
 	"gin/initializers"
 	"gin/models"
+	"log"
+	"os"
 	"time"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 )
+
+var jwtKey = []byte(os.Getenv("SECRET_KEY"))
 
 func StaffPost(c *gin.Context) {
 
@@ -80,9 +85,28 @@ func StaffLogin(c *gin.Context) {
 		return
 	}
 
+	// Create a JWT token
+	token := jwt.New(jwt.SigningMethodHS256)
+	// Set claims for the token (user info and expiration time)
+	claims := token.Claims.(jwt.MapClaims)
+	claims["username"] = staff.Username
+	claims["hospital_id"] = staff.HospitalId
+	claims["exp"] = time.Now().Add(time.Hour * 24).Unix() // Token expires in 24 hours
+
+	// Sign the token with the secret key
+	tk, err := token.SignedString(jwtKey)
+	if err != nil {
+		log.Fatal("Error signing token", err)
+		c.JSON(500, gin.H{
+			"error": "Error generating JWT token",
+		})
+		return
+	}
+
 	// If login is successful, return a success message (or a JWT token if you use one)
 	c.JSON(200, gin.H{
 		"message": "Login successful",
-		"data":    staff, // You can return user data or a token here
+		"data":    staff, // You can return user data or a token
+		"token":   tk,    // Send JWT token to client
 	})
 }
