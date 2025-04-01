@@ -23,12 +23,12 @@ func StaffPost(c *gin.Context) {
 	var staff models.Staff
 
 	if err := c.ShouldBindJSON(&staff); err != nil {
-		// Return an error if binding fails
 		c.JSON(400, gin.H{
 			"error": "Invalid request body",
 		})
 		return
 	}
+
 	// Hash the password before saving it
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(staff.Password), bcrypt.DefaultCost)
 	if err != nil {
@@ -60,7 +60,6 @@ func StaffLogin(c *gin.Context) {
 	var loginDetails struct {
 		Username string `json:"username"`
 		Password string `json:"password"`
-		// HospitalId int8  `json:"hospital_id"`
 	}
 
 	// Bind the incoming JSON request to the 'loginDetails' struct
@@ -112,7 +111,7 @@ func StaffLogin(c *gin.Context) {
 	// If login is successful, return a success message
 	c.JSON(200, gin.H{
 		"message": "Login successful",
-		"token":   tk, // Send JWT token to client
+		"token":   tk, // Send JWT token to client for /patient/search and /patient/:id
 	})
 }
 
@@ -204,7 +203,7 @@ func PatientSearch(c *gin.Context) {
 		return
 	}
 
-	// หากไม่พบผู้ป่วยใดๆ ให้ตอบกลับว่า "ไม่พบ"
+	// หากไม่พบผู้ป่วยใดๆ
 	if len(patients) == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"message": "ไม่พบข้อมูลคนไข้"})
 		return
@@ -225,7 +224,7 @@ func PatientGetByid(c *gin.Context) {
 	// ค้นหาผู้ป่วยที่มีค่า ตรงกับ id ที่ส่งมา
 	err := initializers.DB.Where("id = ? OR national_id = ? OR passport_id = ?", id, id, id).First(&patient).Error
 	if err != nil {
-		// ถ้าค้นหาผู้ป่วยไม่พบ
+
 		c.JSON(http.StatusNotFound, gin.H{"message": "ไม่พบผู้ป่วยที่ตรงกับข้อมูลที่ให้"})
 		return
 	}
