@@ -49,7 +49,10 @@ func StaffPost(c *gin.Context) {
 	}
 	c.JSON(200, gin.H{
 		"message": "Staff created successfully",
-		"data":    staff,
+		"data": map[string]interface{}{
+			"username":    staff.Username,
+			"hospital_id": staff.HospitalId,
+		},
 	})
 }
 
@@ -105,16 +108,11 @@ func StaffLogin(c *gin.Context) {
 		})
 		return
 	}
-	
 
-	// If login is successful, return a success message (or a JWT token if you use one)
+	// If login is successful, return a success message
 	c.JSON(200, gin.H{
 		"message": "Login successful",
-		"data":    {
-			staff.username,
-			staff.hospital_id
-		}, // You can return user data or a token
-		"token":   tk,    // Send JWT token to client
+		"token":   tk, // Send JWT token to client
 	})
 }
 

@@ -1,19 +1,22 @@
-package database
+package mock
 
 import (
 	"gin/models"
 
-	"gorm.io/gorm"
+	"github.com/stretchr/testify/mock"
 )
 
-type Database interface {
+// DatabaseInterface ใช้เป็น Interface สำหรับ Mock
+type DatabaseInterface interface {
 	CreateStaff(staff *models.Staff) error
 }
 
-type GormDB struct {
-	DB *gorm.DB
+// MockDatabase จำลอง Database แทน Gorm
+type MockDatabase struct {
+	mock.Mock
 }
 
-func (g *GormDB) CreateStaff(staff *models.Staff) error {
-	return g.DB.Create(staff).Error
+func (m *MockDatabase) CreateStaff(staff *models.Staff) error {
+	args := m.Called(staff)
+	return args.Error(0)
 }

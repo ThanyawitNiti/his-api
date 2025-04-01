@@ -3,6 +3,7 @@ version: '3.8'
 services:
   nginx:
     image: nginx:latest
+    container_name: nginx_proxy
     ports:
       - "80:80"
     volumes:
@@ -12,19 +13,21 @@ services:
 
   app:
     build: .
+    container_name: golang_app
     ports:
       - "8080:8080"
     depends_on:
       - db
     environment:
-      - DB_HOST=db
+      - DB_HOST=db              
       - DB_PORT=5432
-      - DB_USER=
+      - DB_USER=postgres
       - DB_PASSWORD=yourpassword
       - DB_NAME=yourdatabase
 
   db:
     image: postgres:latest
+    container_name: postgres_db
     restart: always
     ports:
       - "5432:5432"
